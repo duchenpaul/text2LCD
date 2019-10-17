@@ -3,6 +3,12 @@
 
 #include <ArduinoJson.h>
 
+#include "LiquidCrystal_I2C.h" // Added library*
+//Set the pins on the I2C chip used for LCD connections
+//ADDR,EN,R/W,RS,D4,D5,D6,D7
+LiquidCrystal_I2C lcd(0x27,2,1,0,4,5,6,7); // 0x27 is the default I2C bus address of the backpack-see article
+
+
 ESP8266WebServer server(80);
 
 const char* ssid = "Wolfstein";
@@ -11,6 +17,11 @@ const char* password =  "++++----";
 void setup() {
 
   Serial.begin(115200);
+
+  // Set off LCD module
+  lcd.begin (20,4); // 16 x 2 LCD module
+  lcd.setBacklightPin(3,POSITIVE); // BL, BL_POL
+
   WiFi.begin(ssid, password);  //Connect to the WiFi network
 
   while (WiFi.status() != WL_CONNECTED) {  //Wait for connection
@@ -79,4 +90,16 @@ void handleBody() { //Handler for the body path
     Serial.println(LINE_3_TEXT);
     Serial.println(LINE_4_TEXT);
     Serial.println(BACKLIGHT);
+
+    lcd.setBacklight(BACKLIGHT);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(LINE_1_TEXT);
+    lcd.setCursor(0,1);
+    lcd.print(LINE_2_TEXT);
+    lcd.setCursor(0,2);
+    lcd.print(LINE_3_TEXT);
+    lcd.setCursor(0,3);
+    lcd.print(LINE_4_TEXT);
+
 }
