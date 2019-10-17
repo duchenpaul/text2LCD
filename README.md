@@ -1,6 +1,14 @@
 # text2LCD
 Show strings on the screen LCD2004 from API post
 
+## Wiring
+|ESP8266|LCD2004 PIN|
+|-|-|
+|3v3/5v|VCC|
+|GND|GND|
+|D2|SDA|
+|D1|SCL|
+
 ## Usage
 Send the post data to `http:<esp8266_ip>/api`. 
 Data example:
