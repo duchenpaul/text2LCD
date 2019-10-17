@@ -1,5 +1,5 @@
 # text2LCD
-Show strings on the screen LCD2004 from API post
+Send Text via REST API to ESP8266 LCD
 
 ## Wiring
 |ESP8266|LCD2004 PIN|
