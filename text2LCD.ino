@@ -51,7 +51,7 @@ void setup() {
     //Local intialization. Once its business is done, there is no need to keep it around
     WiFiManager wifiManager;
     // Uncomment for testing wifi manager
-    wifiManager.resetSettings();
+    // wifiManager.resetSettings();
     wifiManager.setAPCallback(configModeCallback);
 
     //or use this for auto generated name ESP + ChipID
