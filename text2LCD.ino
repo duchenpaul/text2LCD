@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 
 #include <DNSServer.h>            //Local DNS Server used for redirecting all requests to the configuration portal
+
 #include <ESP8266WebServer.h>
 
 #include <ArduinoJson.h>
@@ -61,7 +62,8 @@ void setup() {
     //WiFi.begin(WIFI_SSID, WIFI_PWD);
     String hostname(HOSTNAME);
     hostname += String(ESP.getChipId(), HEX);
-    WiFi.hostname(hostname);
+    // WiFi.hostname(hostname);
+    WiFi.hostname("2004LCD");
 
     // Connecting to WiFi network
     Serial.println();
@@ -88,7 +90,7 @@ void setup() {
     server.begin(); //Start the server
     Serial.println("Server listening");
 
-    Serial.println(WiFi.localIP().toString()+="/api");
+    Serial.println(WiFi.localIP().toString() += "/api");
     lcd.setBacklight(HIGH);
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -98,13 +100,17 @@ void setup() {
     lcd.setCursor(0, 2);
     lcd.print("API Address:");
     lcd.setCursor(0, 3);
-    lcd.print(WiFi.localIP().toString()+="/api");
+    lcd.print(WiFi.localIP().toString() += "/api");
 
 }
 
 void loop() {
     if (WiFi.status() == WL_CONNECTED) {
         server.handleClient(); //Handling of incoming requests
+    } else {
+        lcd.clear();
+        lcd.setCursor(0, 1);
+        lcd.print("WiFi not connected");
     }
 }
 
@@ -119,7 +125,6 @@ void handleBody() { //Handler for the body path
     message += server.arg("plain");
     message += "\n";
 
-    server.send(200, "text/plain", "received");
     Serial.println(message);
 
     // char json[] = {server.arg("plain")};
@@ -132,6 +137,7 @@ void handleBody() { //Handler for the body path
     if (error) {
         Serial.print(F("deserializeJson() failed: "));
         Serial.println(error.c_str());
+        server.send(400, "text/plain", "Deserialize json failed");
         return;
     }
 
@@ -162,5 +168,6 @@ void handleBody() { //Handler for the body path
     lcd.print(LINE_3_TEXT);
     lcd.setCursor(0, 3);
     lcd.print(LINE_4_TEXT);
+    server.send(200, "text/plain", "success");
 
 }
