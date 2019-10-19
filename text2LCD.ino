@@ -17,6 +17,9 @@ LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7); // 0x27 is the default I2C bus
 
 ESP8266WebServer server(80);
 
+int RESTART_CYCLE = 100;
+static int restartCount = 0;
+
 // const char* ssid = "Wolfstein";
 // const char* password =  "++++----";
 void configModeCallback(WiFiManager * myWiFiManager);
@@ -169,5 +172,13 @@ void handleBody() { //Handler for the body path
     lcd.setCursor(0, 3);
     lcd.print(LINE_4_TEXT);
     server.send(200, "text/plain", "success");
+
+    restartCount += 1;
+    Serial.println(RESTART_CYCLE);
+    Serial.println(restartCount);
+    if (restartCount > RESTART_CYCLE){
+            Serial.println("restart");
+            ESP.restart();
+        }
 
 }
