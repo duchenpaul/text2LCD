@@ -17,7 +17,7 @@ LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7); // 0x27 is the default I2C bus
 
 ESP8266WebServer server(80);
 
-int RESTART_CYCLE = 100;
+int RESTART_CYCLE = 1000;
 static int restartCount = 0;
 
 // const char* ssid = "Wolfstein";
